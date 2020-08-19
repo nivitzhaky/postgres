@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    strategy: EMBEDDED
+    url: jdbc:h2:~/test;DB_CLOSE_DELAY=-1;TRACE_LEVEL_FILE=3;TRACE_LEVEL_SYSTEM_OUT=3;IGNORECASE=TRUE;AUTO_SERVER=TRUE
+    username: sa
+    password:
+    initialize: true
+    driverClassName: org.h2.Driver
+    maxPoolSize: 20
+  jpa:
+    hibernate:
+      namingStrategy: org.hibernate.cfg.DefaultNamingStrategy
+      generate-ddl: true
+      ddlAuto: create-drop
+    databasePlatform: org.hibernate.dialect.H2Dialect
+    database: H2
+    showSql: true
