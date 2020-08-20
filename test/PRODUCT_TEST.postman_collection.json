@@ -1,0 +1,319 @@
+{
+	"info": {
+		"_postman_id": "658c3405-459a-4e58-865e-2e3bbe60f9d5",
+		"name": "PRODUCT_TEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c1052c89-3a5d-4484-9584-882bf39cad03",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "40ea5a8c-665a-4cb1-b5e2-7289ddb98931",
+						"exec": [
+							"pm.collectionVariables.set(\"UserNameCreate\", \"AutoUser\" + Math.floor(Math.random()*2000) +  Math.floor(Math.random()*2000));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"{{UserNameCreate}}\", \"password\": \"{{UserNameCreate}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Server_URL}}/user",
+					"host": [
+						"{{Server_URL}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eb847f9c-5711-4222-82ba-5554fb87957f",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"Access_token\", jsonData.token);\r",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9643310b-4c49-4df1-bfbe-b8a11c1eb917",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"{{UserNameCreate}}\", \"password\": \"{{UserNameCreate}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Server_URL}}/authenticate",
+					"host": [
+						"{{Server_URL}}"
+					],
+					"path": [
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ef33970e-5369-4c4b-8bee-927c8e707e08",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 201;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f3687a9e-39c5-4c01-8f95-bbd9de034864",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\": \"title1\", \"category\": \"category1\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Server_URL}}/api/products/",
+					"host": [
+						"{{Server_URL}}"
+					],
+					"path": [
+						"api",
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7ed26a92-355e-4499-8bbb-559e407b3508",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"title is \" + jsonData.data[0].title] =jsonData.data[0].title === \"title1\";",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b4d212b4-7858-48f8-98fa-70c8efca969c",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{Server_URL}}/api/products/",
+					"host": [
+						"{{Server_URL}}"
+					],
+					"path": [
+						"api",
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b15fa596-d5af-4130-b924-f6c959363808",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ed4b5317-1a4b-40e4-ac90-67a2c937ba1d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "4077f577-e8e3-4c53-9c3b-6304461109e0",
+			"key": "UserNameCreate",
+			"value": ""
+		},
+		{
+			"id": "6516e161-1a79-46d6-9076-f717431fbeb9",
+			"key": "Access_token",
+			"value": ""
+		},
+		{
+			"id": "3cebb868-3bab-42d0-92ba-5fa03d8a62c2",
+			"key": "Server_URL",
+			"value": "appserver:8080"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

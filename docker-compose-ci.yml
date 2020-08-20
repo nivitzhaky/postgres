@@ -1,6 +1,6 @@
 version: "3"
 services:
-  server:
+  appserver:
     container_name: server
     hostname: localhost
     build:
