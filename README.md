@@ -9,3 +9,11 @@ docker exec  postgres_newman_1 newman run PRODUCT_TEST.postman_collection.json -
 
 stop newman:
 docker-compose -f docker-compose-ci.yml down
+
+
+openshift:
+
+ docker build . -t hansdson-postgres
+ docker tag hansdson-postgres nivitzhaky/hansdson-postgres
+ docker push nivitzhaky/hansdson-postgres
+ 
