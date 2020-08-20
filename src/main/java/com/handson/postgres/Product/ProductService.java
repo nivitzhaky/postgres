@@ -23,27 +23,27 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Product> searchProducts(String title, String category,
-                                            Integer limit, Integer offset, Integer sort, SortDirection sortDirection) {
+    public List<Product> searchProducts(String username, String title, String category,
+                                        Integer limit, Integer offset, Integer sort, SortDirection sortDirection) {
         List<Product> queryRes = null;
         if (SortDirection.asc.equals(sortDirection)) {
-            queryRes = productRepository.searchProducts(likeLowerOrEmptyString(title),
+            queryRes = productRepository.searchProducts(username, likeLowerOrEmptyString(title),
                     likeLowerOrEmptyString(category), limit, offset, sort);
         } else {
-            queryRes = productRepository.searchProductsDesc(likeLowerOrEmptyString(title),
+            queryRes = productRepository.searchProductsDesc(username, likeLowerOrEmptyString(title),
                     likeLowerOrEmptyString(category), limit, offset, sort);
         }
         return queryRes;
     }
 
-    public List<ProductItem> searchProductsFormatted(String title, String category,
-                                        Integer limit, Integer offset, Integer sort, SortDirection sortDirection) {
-        List<Map<String, Object>> queryRes = productRepository.searchProductsFormatted(likeLowerOrEmptyString(title),
+    public List<ProductItem> searchProductsFormatted(String username, String title, String category,
+                                                     Integer limit, Integer offset, Integer sort, SortDirection sortDirection) {
+        List<Map<String, Object>> queryRes = productRepository.searchProductsFormatted(username, likeLowerOrEmptyString(title),
                     likeLowerOrEmptyString(category), limit, offset, sort);
         return JsonUtils.makeList(queryRes, ProductItem.class, om);
     }
-    public Integer countProducts(String title, String category) {
-        return productRepository.countProducts(likeLowerOrEmptyString(title), likeLowerOrEmptyString(category));
+    public Integer countProducts(String username, String title, String category) {
+        return productRepository.countProducts(username, likeLowerOrEmptyString(title), likeLowerOrEmptyString(category));
     }
 
     public void save(Product product) {

@@ -3,7 +3,7 @@ package com.handson.postgres.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.handson.postgres.Controller.ProductsController;
-import com.handson.postgres.Product.Product;
+import com.handson.postgres.json.ProductIn;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 public class TestContext {
 
-    private final String productTitleCreate = UUID.randomUUID().toString();
+    private final String userCreate = UUID.randomUUID().toString();
 
     private final Map<String, String> vars = new HashMap<>();
 
@@ -34,17 +34,18 @@ public class TestContext {
         super();
         this.om = om;
         vars.put("Webservice_URL", "http://localhost:8080");
-        vars.put("ProductTitleCreate", productTitleCreate);
+        vars.put("ProductTitleCreate", "");
+        vars.put("CategoryCreate", "");
         principal = mock(Principal.class);
-        when(principal.getName()).thenReturn("javainuse");
+        when(principal.getName()).thenReturn(userCreate);
     }
 
     public void givenProducts(int numPatients, ProductsController productsController) throws Exception {
 
         for (int i = 0; i < numPatients; i++) {
-            vars.put("ProductTitleCreate", productTitleCreate + "No" + Strings.padStart(Integer.toString(i), 5, '0'));
+            vars.put("ProductTitleCreate", "ProductNo" + Strings.padStart(Integer.toString(i), 5, '0'));
             vars.put("CategoryCreate", "category" + (i % 2));
-            productsController.addNewProduct( get("json/product.json", Product.class));
+            productsController.addNewProduct(getUser(), get("json/product.json", ProductIn.class));
         }
     }
 
@@ -63,12 +64,8 @@ public class TestContext {
         return principal;
     }
 
-    public void newPatientId() {
-        vars.put("PatientNameCreate", UUID.randomUUID().toString());
-    }
-
-    public String getProductTitleCreate() {
-        return productTitleCreate;
+    public String getUserCreate() {
+        return userCreate;
     }
 
     public Principal getUser() {
