@@ -32,14 +32,14 @@ class ProductControllerTest {
     @Test
     void get10Patients() throws Exception {
         c.givenProducts(10, pc);
-        assertThat(pc.search(null, c.getProductTitleCreate(), null, 1, 50, patientId, asc)
+        assertThat(pc.search( c.getProductTitleCreate(), null, 1, 50, productId, asc)
                 .getBody().getData().size(), is(10));
     }
 
     @Test
     void get5PatientsWithCategory1() throws Exception {
         c.givenProducts(10, pc);
-        assertThat(pc.search(null, c.getProductTitleCreate(), "category1", 1, 50, patientId, asc)
+        assertThat(pc.search( c.getProductTitleCreate(), "category1", 1, 50, productId, asc)
                 .getBody().getData().size(), is(5));
     }
 
@@ -47,7 +47,7 @@ class ProductControllerTest {
     @Test
     void get10PatientsAndLimit() throws Exception {
         c.givenProducts(10, pc);
-        assertThat(pc.search(null, c.getProductTitleCreate(), null, 1, 5, patientId, asc)
+        assertThat(pc.search(c.getProductTitleCreate(), null, 1, 5, productId, asc)
                 .getBody().getData().size(), is(5));
     }
 

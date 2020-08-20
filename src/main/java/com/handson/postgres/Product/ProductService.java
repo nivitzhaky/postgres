@@ -1,47 +1,57 @@
 package com.handson.postgres.Product;
 
 
-import com.handson.postgres.json.Product;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.handson.postgres.json.ProductItem;
 import com.handson.postgres.json.SortDirection;
+import com.handson.postgres.utils.JsonUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
 
+    @Autowired
+    ObjectMapper om;
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Product> searchProducts(Long ProductId, String title, String category,
+    public List<Product> searchProducts(String title, String category,
                                             Integer limit, Integer offset, Integer sort, SortDirection sortDirection) {
         List<Product> queryRes = null;
         if (SortDirection.asc.equals(sortDirection)) {
-            queryRes = productRepository.searchProducts(ProductId, likeLowerOrNull(title),
-                    likeLowerOrNull(category), limit, offset, sort);
+            queryRes = productRepository.searchProducts(likeLowerOrEmptyString(title),
+                    likeLowerOrEmptyString(category), limit, offset, sort);
         } else {
-            queryRes = productRepository.searchProductsDesc(ProductId, likeLowerOrNull(title),
-                    likeLowerOrNull(category), limit, offset, sort);
+            queryRes = productRepository.searchProductsDesc(likeLowerOrEmptyString(title),
+                    likeLowerOrEmptyString(category), limit, offset, sort);
         }
         return queryRes;
     }
 
-    public Integer countProducts(Long productId, String title, String category) {
-        return productRepository.countProducts(productId, likeLowerOrNull(title), likeLowerOrNull(category));
+    public List<ProductItem> searchProductsFormatted(String title, String category,
+                                        Integer limit, Integer offset, Integer sort, SortDirection sortDirection) {
+        List<Map<String, Object>> queryRes = productRepository.searchProductsFormatted(likeLowerOrEmptyString(title),
+                    likeLowerOrEmptyString(category), limit, offset, sort);
+        return JsonUtils.makeList(queryRes, ProductItem.class, om);
+    }
+    public Integer countProducts(String title, String category) {
+        return productRepository.countProducts(likeLowerOrEmptyString(title), likeLowerOrEmptyString(category));
     }
 
     public void save(Product product) {
         productRepository.save(product);
     }
 
-    public static String likeLowerOrNull(String str) {
-        return str != null ? "%" + str.toLowerCase() + "%" : null;
+    public static String likeLowerOrEmptyString(String str) {
+        return str != null ? "%" + str.toLowerCase() + "%" : "";
     }
 
 }

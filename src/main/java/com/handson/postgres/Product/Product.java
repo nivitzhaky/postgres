@@ -1,4 +1,4 @@
-package com.handson.postgres.json;
+package com.handson.postgres.Product;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,17 +10,17 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="product_id")
-    private long productId;
+    private Long productId;
     @Column(name="title")
     private String title;
     @Column(name="category")
     private String category;
 
-    public long getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

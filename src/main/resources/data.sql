@@ -1,0 +1,1 @@
+INSERT INTO users (id, name, password) VALUES (1, 'javainuse', '$2y$12$JfmXLQVmTZGpeYVgr6AVhejDGynQ739F4pJE1ZjyCPTvKIHTYb2fi');

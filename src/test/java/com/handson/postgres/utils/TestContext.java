@@ -3,7 +3,7 @@ package com.handson.postgres.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.handson.postgres.Controller.ProductsController;
-import com.handson.postgres.json.Product;
+import com.handson.postgres.Product.Product;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.io.IOException;
