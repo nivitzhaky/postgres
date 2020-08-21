@@ -33,3 +33,14 @@ spec:
             failureThreshold: 5
             initialDelaySeconds: 40
             periodSeconds: 5
+          volumeMounts:
+            - name: application-config
+              mountPath: "/opt/conf"
+              readOnly: true
+      volumes:
+        - name: application-config
+          configMap:
+            name: postgres-app-config
+            items:
+              - key: application.properties
+                path: application.properties
