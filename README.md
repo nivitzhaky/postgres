@@ -18,7 +18,7 @@ push docker (no need to run)
  
 openshift:
 
- oc login -u developer -p developer
+ oc login -u admin  -p admin
  oc project myproject
  git clone https://github.com/nivitzhaky/postgres.git
  cd postgres/src/main/resources/k8s/
