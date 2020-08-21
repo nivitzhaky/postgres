@@ -1,9 +1,11 @@
-apiVersion: apps/v1beta1
+apiVersion: v1
 kind: Deployment
 metadata:
-  name: postgres-deployment
   labels:
     app: postgres
+    openshift.io/deployment-config.name: postgres
+    template: postgresql-ephemeral-template
+  name: postgres-1
 spec:
   replicas: 1
   selector:
@@ -13,19 +15,26 @@ spec:
     metadata:
       labels:
         app: postgres
+        name: postgres
     spec:
       containers:
-        - name: postgres
-          image: postgres:10.1
+        - env:
+            - name: POSTGRESQL_USER
+              value: postgres
+            - name: POSTGRESQL_PASSWORD
+              value: postgres
+            - name: POSTGRESQL_DATABASE
+              value: postgres
+          image: >-
+            centos/postgresql-95-centos7@sha256:d459c9bb18ec7de443fbe4dd31cff26bdc6fdc681363922e97ae2f40e64a93c1
+          imagePullPolicy: IfNotPresent
+          name: postgresql
           ports:
             - containerPort: 5432
-          env:
-            - name: POSTGRES_PASSWORD
-              value: postgres
+              protocol: TCP
           volumeMounts:
-            - mountPath: "/var/lib/postgresql/data"
-              name: "mendix-pgdata"
+            - mountPath: /var/lib/pgsql/data
+              name: postgres-data
       volumes:
-        - hostPath:
-            path: "/home/docker/pgdata"
-          name: mendix-pgdata
+        - emptyDir: {}
+          name: postgres-data
