@@ -1,7 +1,7 @@
 package com.handson.postgres;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.handson.postgres.Controller.ProductsController;
+import com.handson.postgres.controller.ProductsController;
 import com.handson.postgres.utils.TestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

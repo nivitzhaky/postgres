@@ -1,4 +1,4 @@
-package com.handson.postgres.Controller;
+package com.handson.postgres.controller;
 
 import com.handson.postgres.Product.ProductService;
 import com.handson.postgres.json.*;

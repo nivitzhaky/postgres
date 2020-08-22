@@ -6,9 +6,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
@@ -41,10 +44,12 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody JwtRequest userRequest) throws Exception {
+        String encodedPass = passwordEncoder.encode(userRequest.getPassword());
         DBUser user = DBUser.UserBuilder.anUser().name(userRequest.getUsername())
-                .password( passwordEncoder.encode(userRequest.getPassword())).build();
+                .password(encodedPass).build();
         userService.save(user);
-        return ResponseEntity.ok(user);
+        UserDetails userDetails = new User(userRequest.getUsername(), encodedPass, new ArrayList<>());
+        return ResponseEntity.ok(new JwtResponse(jwtTokenUtil.generateToken(userDetails)));
     }
 
     private void authenticate(String username, String password) throws Exception {
