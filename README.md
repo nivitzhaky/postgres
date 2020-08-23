@@ -12,6 +12,7 @@ docker-compose -f docker-compose-ci.yml down
 
 
 push docker (no need to run)
+ mvn clean install
  docker build . -t hansdson-postgres
  docker tag hansdson-postgres nivitzhaky/hansdson-postgres
  docker push nivitzhaky/hansdson-postgres
